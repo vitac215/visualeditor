@@ -1,3 +1,7 @@
+.container {
+  width: 800px;
+}
+
 .section-action {
   padding: 10px;
   border: solid black 1px;
@@ -25,8 +29,8 @@
       justify-content: center;
       align-items: center;
       padding: 1%;
-      width: 300px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       background-color: yellow;
       margin-bottom: 10px;
     }

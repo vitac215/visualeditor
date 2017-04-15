@@ -4,6 +4,7 @@
 */
 document.addEventListener('click', (e) => {
   var ele = e.target;
+  // if the clicked element is a imgcontainer
   if (ele.tagName === 'DIV' && ele.classList.contains('imgcontainer')) {
     highlight(ele);
   }
@@ -16,6 +17,25 @@ document.addEventListener('click', (e) => {
 document.getElementById('js-btn-add').addEventListener('click', () => {
   var newContainer = createNewContainer();
   document.getElementsByClassName('section-layout')[0].append(newContainer);
+})
+
+
+document.getElementById('js-btn-split-h').addEventListener('click', () => {
+  // get the clicked container
+  var oldContainer = document.getElementById('imgcontainer-clicked');
+
+  // Make sure the container after split is not too small (should be larger than 60)
+  if (oldContainer && oldContainer.offsetHeight/2 >= 60) {
+    // split the height in half
+    oldContainer.style.height = `${oldContainer.offsetHeight/2}px`;
+
+    // create a new container
+    var newContainer = createNewContainer();
+    // set the height of the new container
+    newContainer.style.height = oldContainer.style.height;
+    // insert the new container after the old container;
+    insertAfter(newContainer, oldContainer);
+  }
 })
 
 
@@ -118,4 +138,13 @@ function createNewContainer() {
   container.setAttribute('ondrop', 'drop(event)');
   container.setAttribute('ondragover', 'dragover(event)');
   return container;
+}
+
+/*
+  Insert a new node after the old newNode
+  @param{ele} newNode: the new node to be inserted
+  @param{ele} oleNode: the reference node that the new node will be inserted after
+*/
+function insertAfter(newNode, oldNode) {
+  oldNode.parentNode.insertBefore(newNode, oldNode.nextSibling);
 }
