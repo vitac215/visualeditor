@@ -92,7 +92,6 @@ document.getElementById('js-btn-save').addEventListener('click', () => {
 
 })
 
-
 /*
   Event listener for clicking the option items under the 'load' button
   remove the current view and load the saved view
@@ -147,7 +146,6 @@ function drop(event) {
   }
 
   // Swap
-  let source_type = event.dataTransfer.getData('type');
   // if the source and target are both img
   if (target.tagName === 'IMG') {
     // get the target img
@@ -157,6 +155,7 @@ function drop(event) {
       // get the source and target container
       let source_container = source_img.parentElement;
       let target_container = target.parentElement;
+      // swap the two images
       swapImg(source_container, target_container, source_img, target_img);
       highlight(target_container);
     }
