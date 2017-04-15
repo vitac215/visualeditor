@@ -1,7 +1,7 @@
 # Visual Editor
 
 
-A simple visual editor written in vanilla Javascript. jQuery is included only for Bootstrap dropdown.
+A simple visual editor written in vanilla Javascript (client-side only). jQuery is included only for Bootstrap dropdown.
 
 Basic features include:
  * Images can be dragged and dropped onto any of the layout area cells
