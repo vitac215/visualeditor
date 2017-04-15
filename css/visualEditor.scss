@@ -1,3 +1,8 @@
+.section-action {
+  padding: 10px;
+  border: solid black 1px;
+}
+
 .section-view {
   display: flex;
   flex-direction: row;
@@ -8,7 +13,7 @@
   }
 
   .section-img {
-    width: 600px;
+    width: 100%;
     .img {
       // width: 100%;
     }
