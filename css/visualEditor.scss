@@ -1,5 +1,5 @@
 .container {
-  width: 800px;
+  width: 600px;
 }
 
 .section-action {
@@ -17,9 +17,9 @@
   }
 
   .section-img {
-    width: 100%;
+    width: 300px;
     .img {
-      // width: 100%;
+      // margin: 10px;
     }
   }
   .section-layout {
@@ -28,15 +28,24 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 1%;
       width: 250px;
       height: 250px;
-      background-color: yellow;
-      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: solid black 1px;
     }
   }
 }
 
 #imgcontainer-clicked {
   outline: 2px solid pink;
+}
+
+.v-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.h-container {
+  display: flex;
+  flex-direction: column;
 }
