@@ -9,6 +9,15 @@ document.addEventListener('click', (e) => {
   }
 })
 
+/*
+  Event listener for clicking the add button
+  append a new contaienr to the layout area
+*/
+document.getElementById('js-btn-add').addEventListener('click', () => {
+  var newContainer = createNewContainer();
+  document.getElementsByClassName('section-layout')[0].append(newContainer);
+})
+
 
 /*
   Ondrag handler
@@ -96,4 +105,17 @@ function highlight(container) {
   });
   // highlight the clicked container
   container.setAttribute('id', 'imgcontainer-clicked');
+}
+
+/*
+  Create a new container element
+  @return{ele} container: the newly created container element
+*/
+function createNewContainer() {
+  var container = document.createElement('div');
+  // Set the container's attribute
+  container.setAttribute('class', 'imgcontainer');
+  container.setAttribute('ondrop', 'drop(event)');
+  container.setAttribute('ondragover', 'dragover(event)');
+  return container;
 }
