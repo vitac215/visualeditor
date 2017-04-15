@@ -4,14 +4,17 @@
 */
 document.addEventListener('click', (e) => {
   var ele = e.target;
-  // if the clicked element is a imgcontainer
+  // if the clicked element is a imgcontainer or
+  //   the clicked element is a img and it's in a container
   if (ele.tagName === 'DIV' && ele.classList.contains('imgcontainer')) {
     highlight(ele);
+  } else if (ele.tagName === "IMG" && inContainer(ele)) {
+    highlight(ele.parentElement);
   }
 })
 
 /*
-  Event listener for clicking the add button
+  Event listener for clicking the 'add' button
   append a new contaienr to the layout area
 */
 document.getElementById('js-btn-add').addEventListener('click', () => {
@@ -19,7 +22,10 @@ document.getElementById('js-btn-add').addEventListener('click', () => {
   document.getElementsByClassName('section-layout')[0].append(newContainer);
 })
 
-
+/*
+  Event listener for clicking the 'split horizontally' button
+  split the clicked container horizontally
+*/
 document.getElementById('js-btn-split-h').addEventListener('click', () => {
   // get the clicked container
   var oldContainer = document.getElementById('imgcontainer-clicked');
@@ -36,6 +42,13 @@ document.getElementById('js-btn-split-h').addEventListener('click', () => {
     // insert the new container after the old container;
     insertAfter(newContainer, oldContainer);
   }
+
+  // Update the image size correspondingly
+  var img = oldContainer.children[0];
+  // if the container contains an img
+  if (img) {
+    updateImgSize(img, oldContainer);
+  }
 })
 
 
@@ -45,7 +58,7 @@ document.getElementById('js-btn-split-h').addEventListener('click', () => {
 */
 function drag(event) {
   event.dataTransfer.setData('id', event.target.id);
-  event.dataTransfer.setData('type', event.target.tagName);
+  // event.dataTransfer.setData('type', event.target.tagName);
 }
 
 /*
@@ -70,18 +83,27 @@ function drop(event) {
   //    if the img is dragger over on another img, do not append
   if (target.children.length === 0 && target.tagName !== 'IMG') {
     appendImg(source_img, target);
+    highlight(target);
   }
 
   // Swap
   let source_type = event.dataTransfer.getData('type');
-  // if the source is an img and the target is also an img
-  if (source_type === 'IMG' && target.tagName === 'IMG') {
-    let source_container = source_img.parentElement;
+  // if the source and target are both img
+  if (target.tagName === 'IMG') {
+    // get the target img
     let target_img = document.getElementById(target.id);
-    let target_container = target.parentElement;
-    swapImg(source_container, target_container, source_img, target_img);
+    // if the source img and target img are both in a container
+    if (inContainer(source_img) && inContainer(target_img)) {
+      // get the source and target container
+      let source_container = source_img.parentElement;
+      let target_container = target.parentElement;
+      swapImg(source_container, target_container, source_img, target_img);
+      highlight(target_container);
+    }
   }
 }
+
+// && target.tagName === 'IMG' && target.parentElement.classList.contains('imgcontainer')
 
 /*
   Append img to a container
@@ -89,12 +111,9 @@ function drop(event) {
   @param{ele} container
 */
 function appendImg(img, container) {
+  // Resize the img to fit in the container
+  updateImgSize(img, container)
   // when drops, append the img to the container
-  if (img.width !== container.offsetWidth || img.height !== container.offsetHeight ) {
-    // Resize the img to fit in the container
-    img.width = container.offsetWidth * 0.9;
-    img.height = container.offsetHeight * 0.9;
-  }
   container.appendChild(img);
 }
 
@@ -147,4 +166,31 @@ function createNewContainer() {
 */
 function insertAfter(newNode, oldNode) {
   oldNode.parentNode.insertBefore(newNode, oldNode.nextSibling);
+}
+
+/*
+  Update the img size according to its container size
+  @param{ele} img
+  @param{ele} container
+*/
+function updateImgSize(img, container) {
+  if (img.width !== container.offsetWidth || img.height !== container.offsetHeight ) {
+    img.width = container.offsetWidth * 0.9;
+    img.height = container.offsetHeight * 0.9;
+  }
+}
+
+/*
+  Check if an element is in a layout cell/imgcontainer
+  @param{ele} ele
+  @return{boolean} true if the img is in a layout cell, false otherwise
+*/
+function inContainer(ele) {
+  var check;
+  if (ele.parentElement && ele.parentElement.classList.contains('imgcontainer')) {
+    check = true;
+  } else {
+    check = false;
+  }
+  return check;
 }
