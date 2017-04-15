@@ -14,15 +14,41 @@
 
   <section class="section-view">
     <div class="section-item section-img .col-md-4">
-      <img src="https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg" alt="cat1" class="img" id="img1"/>
-    </div>
+      <img
+        src="https://pbs.twimg.com/profile_images/664169149002874880/z1fmxo00.jpg"
+        alt="cat"
+        class="img"
+        id="img1"
+        draggable="true"
+        ondragstart="drag(event)" />
+      <img
+        src="https://pbs.twimg.com/profile_images/737359467742912512/t_pzvyZZ_400x400.jpg"
+        alt="cat"
+        class="img"
+        id="img2"
+        draggable="true"
+        ondragstart="drag(event)" />
+    </div> <!-- end of section-img -->
 
     <div class="section-item section-container .col-md-8">
-      <div class="imgcontainer"></div>
-      <div class="imgcontainer"></div>
-      <div class="imgcontainer"></div>
-    </div>
+      <div
+        class="imgcontainer"
+        ondrop="drop(event)"
+        ondragover="dragover(event)">
+      </div>
+      <div
+        class="imgcontainer"
+        ondrop="drop(event)"
+        ondragover="dragover(event)">
+      </div>
+      <div
+        class="imgcontainer"
+        ondrop="drop(event)"
+        ondragover="dragover(event)">
+      </div>
+    </div> <!-- end of section-container -->
   </section> <!-- end of section-display -->
+
   <script src="js/visualEditor.js"></script>
 </body>
 
