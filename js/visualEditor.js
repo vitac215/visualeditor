@@ -32,31 +32,9 @@ document.getElementById('js-btn-split-h').addEventListener('click', () => {
 
   // Make sure the container after split is not too small (should be larger than 60)
   if (oldContainer && oldContainer.offsetHeight/2 >= 60) {
-    // split the height in half
-    oldContainer.style.height = `${Math.floor(oldContainer.offsetHeight/2)}px`;
-
-    var newParentContainer = createParentContainer('h');
-    var parentContainer = oldContainer.parentNode;
-    parentContainer.insertBefore(newParentContainer, oldContainer);
-    newParentContainer.appendChild(oldContainer);
-
-    // create a new container
-    var newContainer = createNewContainer();
-    // set the size of the new container
-    newContainer.style.height = oldContainer.style.height;
-    newContainer.style.width = `${oldContainer.offsetWidth}px`;
-    // insert the new container after the old container;
-    insertAfter(newContainer, oldContainer);
-  }
-
-  // if the container contains an img
-  if (oldContainer.children[0]) {
-    // Update the image size correspondingly
-    var img = oldContainer.children[0];
-    updateImgSize(img, oldContainer);
+    split('h', oldContainer);
   }
 })
-
 
 /*
   Event listener for clicking the 'split vertically' button
@@ -68,32 +46,10 @@ document.getElementById('js-btn-split-v').addEventListener('click', () => {
 
   // Make sure the container after split is not too small (should be larger than 60)
   if (oldContainer && oldContainer.offsetWidth/2 >= 60) {
-    // split the width in half
-    oldContainer.style.width = `${Math.floor(oldContainer.offsetWidth/2)}px`;
-
-    // Create a new parent container to contain the splited elements
-    var newParentContainer = createParentContainer('v');
-    var parentContainer = oldContainer.parentNode;
-    parentContainer.insertBefore(newParentContainer, oldContainer);
-    newParentContainer.appendChild(oldContainer);
-
-    // create a new container
-    var newContainer = createNewContainer();
-    // set the size of the new container
-    newContainer.style.width = oldContainer.style.width;
-    newContainer.style.height = `${oldContainer.offsetHeight}px`;
-    // insert the new container after the old container;
-    insertAfter(newContainer, oldContainer);
-
-  }
-
-  // if the container contains an img
-  if (oldContainer.children[0]) {
-    // Update the image size correspondingly
-    var img = oldContainer.children[0];
-    updateImgSize(img, oldContainer);
+    split('v', oldContainer);
   }
 })
+
 
 
 /*
@@ -203,11 +159,57 @@ function createNewContainer() {
   return container;
 }
 
-function createParentContainer(type) {
+/*
+  Create a new parent container based on the split direction
+  @return{ele} container:  the newly created parent container
+*/
+function createParentContainer(direction) {
   var container = document.createElement('div');
   // Set the container's attribute
-  container.setAttribute('class', `${type}-container`);
+  container.setAttribute('class', `${direction}-container`);
   return container;
+}
+
+/*
+  Split the container in specified direction
+  @param{string} direction:  the split direction (h or v)
+  @param{ele} oldContainer:  the container to be splited
+*/
+function split(direction, oldContainer) {
+  // split the old container in half in corresponding direction
+  if (direction === 'h') {
+    oldContainer.style.height = `${Math.round(oldContainer.offsetHeight/2)}px`;
+    var newParentContainer = createParentContainer('h');
+  } else {
+    oldContainer.style.width = `${Math.round(oldContainer.offsetWidth/2)}px`;
+    var newParentContainer = createParentContainer('v');
+  }
+
+  var parentContainer = oldContainer.parentNode;
+  parentContainer.insertBefore(newParentContainer, oldContainer);
+  newParentContainer.appendChild(oldContainer);
+
+  // create a new container
+  var newContainer = createNewContainer();
+
+  // set the size of the new container
+  if (direction === 'h') {
+    newContainer.style.height = oldContainer.style.height;
+    newContainer.style.width = `${oldContainer.offsetWidth}px`;
+  } else {
+    newContainer.style.width = oldContainer.style.width;
+    newContainer.style.height = `${oldContainer.offsetHeight}px`;
+  }
+
+  // insert the newly splited element
+  insertAfter(newContainer, oldContainer);
+
+  // if the container contains an img
+  if (oldContainer.children[0]) {
+    // Update the image size correspondingly
+    var img = oldContainer.children[0];
+    updateImgSize(img, oldContainer);
+  }
 }
 
 /*
