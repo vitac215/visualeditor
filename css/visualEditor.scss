@@ -1,0 +1,27 @@
+.section-view {
+  display: flex;
+  flex-direction: row;
+
+  .section-item {
+    padding: 10px;
+    border: solid black 1px;
+  }
+
+  .section-img {
+    width: 500px;
+    .img {
+      width: 100%;
+    }
+  }
+  .section-container {
+
+    .imgcontainer {
+      padding: 1%;
+      width: 300px;
+      height: 200px;
+      background-color: yellow;
+      margin-bottom: 10px;
+    }
+  }
+
+}
