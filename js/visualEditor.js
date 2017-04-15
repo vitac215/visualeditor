@@ -81,10 +81,15 @@ document.getElementById('js-btn-save').addEventListener('click', () => {
   while (name === "") {
     name = prompt("Please enter a name for your layout, this cannot be blank", "default");
   }
-  // save the current layout in local storage
-  localStorage.setItem(name, JSON.stringify(layout));
-  // add the name as an option to the dropdown menu
-  addLayout(name);
+  if (name != null) {
+    // save the current layout in local storage
+    localStorage.setItem(name, JSON.stringify(layout));
+    // add the name as an option to the dropdown menu
+    addLayout(name);
+  } else {
+    alert("Save failed, please try again");
+  }
+
 })
 
 
@@ -148,7 +153,7 @@ function drop(event) {
     // get the target img
     let target_img = document.getElementById(target.id);
     // if the source img and target img are both in a container
-    if (inContainer(source_img) && inContainer(target_img)) {
+    if (inContainer(source_img) && inContainer(target_img) && source_img !== target_img) {
       // get the source and target container
       let source_container = source_img.parentElement;
       let target_container = target.parentElement;

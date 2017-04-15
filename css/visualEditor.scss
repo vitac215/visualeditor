@@ -31,9 +31,6 @@ $highlight-color: #E08E79;
 
       img {
         margin-bottom: 10px;
-      }
-
-      .img {
         width: 200px;
       }
     }
@@ -51,6 +48,10 @@ $highlight-color: #E08E79;
       }
     }
   }
+}
+
+.img {
+  cursor: pointer;
 }
 
 #imgcontainer-clicked {
