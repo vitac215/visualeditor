@@ -1,11 +1,16 @@
-$cell-color: #f2f2f2;
+$cell-color: #F1D4AF;
+$main-color: #774F38;
+$highlight-color: #E08E79;
 
 .container {
-  width: 600px;
+  width: 550px;
+  padding: 0;
+  border: solid 2px $main-color;
+  border-radius: 5px;
 
   .section-action {
-    padding: 10px;
-    border: solid black 1px;
+    padding: 20px;
+    background-color: $main-color;
 
     .dropdown {
       display: inline-block;
@@ -17,14 +22,19 @@ $cell-color: #f2f2f2;
     flex-direction: row;
 
     .section-item {
-      padding: 10px;
-      border: solid black 1px;
+      padding: 2%;
+      border: solid 1px $main-color;
     }
 
     .section-img {
       width: 300px;
+
+      img {
+        margin-bottom: 10px;
+      }
+
       .img {
-        // margin: 10px;
+        width: 200px;
       }
     }
     .section-layout {
@@ -35,9 +45,8 @@ $cell-color: #f2f2f2;
         align-items: center;
         width: 250px;
         height: 250px;
-        margin: 2px;
+        margin: 1px;
         box-sizing: border-box;
-        // border: solid black 1px;
         background-color: $cell-color;
       }
     }
@@ -45,7 +54,7 @@ $cell-color: #f2f2f2;
 }
 
 #imgcontainer-clicked {
-  outline: 2px solid pink;
+  outline: 1px solid $highlight-color;
 }
 
 .v-container {

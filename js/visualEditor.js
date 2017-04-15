@@ -238,11 +238,11 @@ function handleSplit(direction) {
   if (oldContainer) {
     // Make sure the container after split is not too small (should be larger than 60)
     if (direction === 'h') {
-      if (oldContainer.offsetHeight/2 >= 60) {
+      if (oldContainer.offsetHeight/2 >= 30) {
         split('h', oldContainer);
       }
     } else {
-      if (oldContainer.offsetWidth/2 >= 60) {
+      if (oldContainer.offsetWidth/2 >= 30) {
         split('v', oldContainer);
       }
     }
