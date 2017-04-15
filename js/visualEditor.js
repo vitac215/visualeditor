@@ -35,18 +35,7 @@ document.getElementById('js-btn-add').addEventListener('click', () => {
   split the clicked container horizontally
 */
 document.getElementById('js-btn-split-h').addEventListener('click', () => {
-  // get the clicked container
-  var oldContainer = document.getElementById('imgcontainer-clicked');
-
-  // Check if there is clicked imgcontainer
-  if (oldContainer) {
-    // Make sure the container after split is not too small (should be larger than 60)
-    if (oldContainer.offsetHeight/2 >= 60) {
-      split('h', oldContainer);
-    }
-  } else {
-    alert("Please select a cell to split");
-  }
+  handleSplit('h');
 })
 
 /*
@@ -54,17 +43,28 @@ document.getElementById('js-btn-split-h').addEventListener('click', () => {
   split the clicked container vertically
 */
 document.getElementById('js-btn-split-v').addEventListener('click', () => {
-  // get the clicked container
-  var oldContainer = document.getElementById('imgcontainer-clicked');
+  handleSplit('v');
+})
 
-  // Check if there is clicked imgcontainer
-  if (oldContainer) {
-    // Make sure the container after split is not too small (should be larger than 60)
-    if (oldContainer.offsetWidth/2 >= 60) {
-      split('v', oldContainer);
-    }
-  } else {
-    alert("Please select a cell to split");
+/*
+  Keyboard shortcut for splitting
+*/
+document.addEventListener('keydown', (event) => {
+  var keyCode = event.which;
+  var arrow = {up: 38, down: 40, left:37, right:39};
+  switch(keyCode) {
+    case arrow.up:
+      handleSplit('h');
+      break;
+    case arrow.down:
+      handleSplit('h');
+      break;
+    case arrow.right:
+      handleSplit('v');
+      break;
+    case arrow.left:
+      handleSplit('v');
+      break;
   }
 })
 
@@ -224,6 +224,31 @@ function createParentContainer(direction) {
   // Set the container's attribute
   container.setAttribute('class', `${direction}-container`);
   return container;
+}
+
+/*
+  Handle the split
+  @param{string} direction: the split direction (h or v)
+*/
+function handleSplit(direction) {
+  // get the clicked container
+  var oldContainer = document.getElementById('imgcontainer-clicked');
+
+  // Check if there is clicked imgcontainer
+  if (oldContainer) {
+    // Make sure the container after split is not too small (should be larger than 60)
+    if (direction === 'h') {
+      if (oldContainer.offsetHeight/2 >= 60) {
+        split('h', oldContainer);
+      }
+    } else {
+      if (oldContainer.offsetWidth/2 >= 60) {
+        split('v', oldContainer);
+      }
+    }
+  } else {
+    alert("Please select a cell to split");
+  }
 }
 
 /*
