@@ -3,7 +3,7 @@
 
 <head>
   <!-- bootstrap css -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="css/visualEditor.min.css" />
 </head>
 
@@ -14,10 +14,15 @@
       <button class="btn btn-default" id="js-btn-split-h" type="button">Split Horizontally</button>
       <button class="btn btn-default" id="js-btn-split-v" type="button">Split Vertically</button>
       <button class="btn btn-default" id="js-btn-save" type="button">Save</button>
-      <button class="btn btn-default dropdown-toggle" id="js-btn-load" type="button" data-toogle="dropdown">
-        Load
-        <span class="caret"></span>
-      </button>
+
+      <div class="dropdown">
+        <button class="btn btn-default" id="js-btn-load" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Load
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="js-btn-load"></ul>
+      </div>
+
     </section> <!-- end of section-action -->
 
     <section class="section-view">
@@ -54,11 +59,20 @@
           ondrop="drop(event)"
           ondragover="dragover(event)">
         </div>
+        <div
+          class="imgcontainer"
+          ondrop="drop(event)"
+          ondragover="dragover(event)">
+        </div>
 
       </div> <!-- end of section-layout -->
     </section> <!-- end of section-display -->
   </div>
 
+  <!-- Used only for bootstrap js plugins -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="js/visualEditor.js"></script>
 </body>
 

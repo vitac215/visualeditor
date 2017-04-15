@@ -1,9 +1,17 @@
+// Save the current layout as default
+(function saveDefaultLayout() {
+  var default_layout = document.getElementsByClassName('section-view')[0].innerHTML;
+  localStorage.setItem('default', JSON.stringify(default_layout));
+  addLayout('default');
+})();
+
+
 /*
   Event listener for clicking an img container
   highlight a clicked img container
 */
-document.addEventListener('click', (e) => {
-  var ele = e.target;
+document.addEventListener('click', (event) => {
+  var ele = event.target;
   // if the clicked element is a imgcontainer or
   //   the clicked element is a img and it's in a container
   if (ele.tagName === 'DIV' && ele.classList.contains('imgcontainer')) {
@@ -30,9 +38,14 @@ document.getElementById('js-btn-split-h').addEventListener('click', () => {
   // get the clicked container
   var oldContainer = document.getElementById('imgcontainer-clicked');
 
-  // Make sure the container after split is not too small (should be larger than 60)
-  if (oldContainer && oldContainer.offsetHeight/2 >= 60) {
-    split('h', oldContainer);
+  // Check if there is clicked imgcontainer
+  if (oldContainer) {
+    // Make sure the container after split is not too small (should be larger than 60)
+    if (oldContainer.offsetHeight/2 >= 60) {
+      split('h', oldContainer);
+    }
+  } else {
+    alert("Please select a cell to split");
   }
 })
 
@@ -44,12 +57,54 @@ document.getElementById('js-btn-split-v').addEventListener('click', () => {
   // get the clicked container
   var oldContainer = document.getElementById('imgcontainer-clicked');
 
-  // Make sure the container after split is not too small (should be larger than 60)
-  if (oldContainer && oldContainer.offsetWidth/2 >= 60) {
-    split('v', oldContainer);
+  // Check if there is clicked imgcontainer
+  if (oldContainer) {
+    // Make sure the container after split is not too small (should be larger than 60)
+    if (oldContainer.offsetWidth/2 >= 60) {
+      split('v', oldContainer);
+    }
+  } else {
+    alert("Please select a cell to split");
   }
 })
 
+/*
+  Event listener for clicking the 'save' button
+  split the clicked container vertically
+*/
+document.getElementById('js-btn-save').addEventListener('click', () => {
+  // save the current layout as html
+  var layout = document.getElementsByClassName('section-view')[0].innerHTML;
+  // prompt the user to enter a name for the layout
+  var name =  prompt("Give a name for your layout", "default");
+  // make sure the user enters a name
+  while (name === "") {
+    name = prompt("Please enter a name for your layout, this cannot be blank", "default");
+  }
+  // save the current layout in local storage
+  localStorage.setItem(name, JSON.stringify(layout));
+  // add the name as an option to the dropdown menu
+  addLayout(name);
+})
+
+
+/*
+  Event listener for clicking the option items under the 'load' button
+  remove the current view and load the saved view
+*/
+document.addEventListener('click', (event) => {
+  var ele = event.target;
+  if (ele.classList.contains('dropdown-item')) {
+    // get the layout name
+    let name = ele.innerHTML;
+    // remove the current layout
+    document.getElementsByClassName('section-view')[0].innerHTML = '';
+    // load the selected layout from localstorage;
+    var selected_layout = JSON.parse(localStorage.getItem(name));
+    // insert the selected layout
+    document.getElementsByClassName('section-view')[0].innerHTML = selected_layout;
+  }
+})
 
 
 /*
@@ -103,7 +158,6 @@ function drop(event) {
   }
 }
 
-// && target.tagName === 'IMG' && target.parentElement.classList.contains('imgcontainer')
 
 /*
   Append img to a container
@@ -135,6 +189,7 @@ function swapImg(sc, tc, simg, timg) {
 
 /*
   Highlight a clicked img container
+  @param{ele} container:  the container to be highlighted
 */
 function highlight(container) {
   var containers = document.getElementsByClassName('imgcontainer');
@@ -161,7 +216,8 @@ function createNewContainer() {
 
 /*
   Create a new parent container based on the split direction
-  @return{ele} container:  the newly created parent container
+  @param{string} direction: the split direction (h or v)
+  @return{ele} container:   the newly created parent container
 */
 function createParentContainer(direction) {
   var container = document.createElement('div');
@@ -227,9 +283,11 @@ function insertAfter(newNode, oldNode) {
   @param{ele} container
 */
 function updateImgSize(img, container) {
+  // if the img size is not the same as the container size
   if (img.width !== container.offsetWidth || img.height !== container.offsetHeight ) {
-    img.width = container.offsetWidth*0.95;
-    img.height = container.offsetHeight*0.95;
+    // resize the imge
+    img.width = container.offsetWidth;
+    img.height = container.offsetHeight;
   }
 }
 
@@ -247,3 +305,19 @@ function inContainer(ele) {
   }
   return check;
 }
+
+/*
+  Add an option under the load dropdown menu
+  @param{string} name:  name of the layout to be saved as the option
+*/
+function addLayout(name) {
+  var optionContainer = document.createElement('li');
+  var option = document.createElement('a');
+  option.innerHTML = name;
+  option.setAttribute('class', 'dropdown-item');
+  optionContainer.appendChild(option);
+  document.getElementsByClassName('dropdown-menu')[0].append(optionContainer);
+}
+
+// Initialize the dropdown
+$('.dropdown-toggle').dropdown();
