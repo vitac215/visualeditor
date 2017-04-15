@@ -1,4 +1,16 @@
 /*
+  Event listener for clicking an img container
+  highlight a clicked img container
+*/
+document.addEventListener('click', (e) => {
+  var ele = e.target;
+  if (ele.tagName === 'DIV' && ele.classList.contains('imgcontainer')) {
+    highlight(ele);
+  }
+})
+
+
+/*
   Ondrag handler
   save the source object's id, tagName (IMG, DIV, etc.)
 */
@@ -71,4 +83,17 @@ function swapImg(sc, tc, simg, timg) {
   // append img to the other container
   appendImg(simg, tc);
   appendImg(timg, sc);
+}
+
+/*
+  Highlight a clicked img container
+*/
+function highlight(container) {
+  var containers = document.getElementsByClassName('imgcontainer');
+  // remove highlighting on all containers
+  Array.from(containers).forEach((ele) => {
+    ele.removeAttribute('id');
+  });
+  // highlight the clicked container
+  container.setAttribute('id', 'imgcontainer-clicked');
 }
