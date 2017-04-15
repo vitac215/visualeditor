@@ -117,7 +117,6 @@ document.addEventListener('click', (event) => {
 */
 function drag(event) {
   event.dataTransfer.setData('id', event.target.id);
-  // event.dataTransfer.setData('type', event.target.tagName);
 }
 
 /*
@@ -270,6 +269,7 @@ function split(direction, oldContainer) {
     var newParentContainer = createParentContainer('v');
   }
 
+  // Create a parent container for the newly created two splitted cells
   var parentContainer = oldContainer.parentNode;
   parentContainer.insertBefore(newParentContainer, oldContainer);
   newParentContainer.appendChild(oldContainer);
@@ -340,10 +340,14 @@ function inContainer(ele) {
   @param{string} name:  name of the layout to be saved as the option
 */
 function addLayout(name) {
+  // create the option element
   var optionContainer = document.createElement('li');
   var option = document.createElement('a');
+  // name the option
   option.innerHTML = name;
+  // set the option's attribute for setting event listener for loading
   option.setAttribute('class', 'dropdown-item');
+  // append the option to the dropdown menu
   optionContainer.appendChild(option);
   document.getElementsByClassName('dropdown-menu')[0].append(optionContainer);
 }
