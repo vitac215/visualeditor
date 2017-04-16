@@ -118,6 +118,7 @@ document.addEventListener('click', (event) => {
 */
 function drag(event) {
   event.dataTransfer.setData('id', event.target.id);
+  event.dataTransfer.setData('type', event.target.tagName);
 }
 
 /*
@@ -134,19 +135,13 @@ function dragover(event) {
 function drop(event) {
   event.preventDefault();
 
-  let target = event.target;   // can be the container or the img in the container
-  let source_id = event.dataTransfer.getData('id');
-  let source_img = document.getElementById(source_id);
+  var source_type = event.dataTransfer.getData('type');
 
-  // check if the container already contains an img, only append img when it does not
-  //    if the img is dragger over on another img, do not append
-  if (target.children.length === 0 && target.tagName !== 'IMG') {
-    appendImg(source_img, target);
-    highlight(target);
+  // Drag img to container
+  if (source_type === "IMG") {
+    handleImgDrag(event);
   }
 
-  // Swap
-  // if the source and target are both img
   if (target.tagName === 'IMG') {
     // get the target img
     let target_img = document.getElementById(target.id);
@@ -162,6 +157,25 @@ function drop(event) {
   }
 }
 
+/*
+  Handle dragging image to a container
+  append the image as backgroundImage of the container
+  @param{event} event:  the drag event
+*/
+function handleImgDrag(event) {
+  // get the target container
+  var target = event.target;
+  // get the source img
+  var source_id = event.dataTransfer.getData('id');
+  var source_img = document.getElementById(source_id);
+
+  // check if the container already contains an img, only append img when it does not
+  if (target.style.backgroundImage === "") {
+    appendImg(source_img, target);
+    highlight(target);
+  }
+}
+
 
 /*
   Append img to a container
@@ -171,8 +185,8 @@ function drop(event) {
 function appendImg(img, container) {
   // Resize the img to fit in the container
   updateImgSize(img, container)
-  // when drops, append the img to the container
-  container.appendChild(img);
+  // when drops, set the img as background of the container
+  container.style.backgroundImage = `url(${img.src})`;
 }
 
 /*
@@ -313,12 +327,8 @@ function insertAfter(newNode, oldNode) {
   @param{ele} container
 */
 function updateImgSize(img, container) {
-  // if the img size is not the same as the container size
-  if (img.width !== container.offsetWidth || img.height !== container.offsetHeight ) {
-    // resize the imge
-    img.width = container.offsetWidth;
-    img.height = container.offsetHeight;
-  }
+  // resize the image
+  container.style.backgroundSize = `${container.offsetWidth}px ${container.offsetHeight}px`;
 }
 
 /*
