@@ -11,7 +11,7 @@
   Event listener for clicking an img container
   highlight a clicked img container
 */
-document.addEventListener('click', (event) => {
+document.addEventListener('drag', (event) => {
   var ele = event.target;
   // if the clicked element is a imgcontainer or
   //   the clicked element is a img and it's in a container
@@ -142,18 +142,9 @@ function drop(event) {
     handleImgDrag(event);
   }
 
-  if (target.tagName === 'IMG') {
-    // get the target img
-    let target_img = document.getElementById(target.id);
-    // if the source img and target img are both in a container
-    if (inContainer(source_img) && inContainer(target_img) && source_img !== target_img) {
-      // get the source and target container
-      let source_container = source_img.parentElement;
-      let target_container = target.parentElement;
-      // swap the two images
-      swapImg(source_container, target_container, source_img, target_img);
-      highlight(target_container);
-    }
+  // Drag cell to another cell, swap the content
+  if (source_type === "DIV") {
+    handleContainerDrag(event);
   }
 }
 
@@ -164,16 +155,39 @@ function drop(event) {
 */
 function handleImgDrag(event) {
   // get the target container
-  var target = event.target;
+  var target_container = event.target;
   // get the source img
   var source_id = event.dataTransfer.getData('id');
   var source_img = document.getElementById(source_id);
 
   // check if the container already contains an img, only append img when it does not
-  if (target.style.backgroundImage === "") {
-    appendImg(source_img, target);
-    highlight(target);
+  if (target_container.style.backgroundImage === "") {
+    source_img = `url(${source_img.src})`
+    appendImg(source_img, target_container);
+    highlight(target_container);
   }
+}
+
+/*
+  Handle dragging container to another container
+  swap the content
+  @param{event} event:  the drag event
+*/
+function handleContainerDrag(event) {
+  // get the target container
+  var target_container = event.target;
+  // get the source container
+  var source_id = event.dataTransfer.getData('id'); // id = imgcontainer-clicked
+  var source_container = document.getElementById(source_id);
+  console.log(source_container);
+
+  // get the target container's background image
+  var target_img = target_container.style.backgroundImage;
+  var source_img = source_container.style.backgroundImage;
+  
+  // swap the container's content
+  swapImg(source_container, target_container, source_img, target_img);
+  highlight(target_container);
 }
 
 
@@ -186,7 +200,7 @@ function appendImg(img, container) {
   // Resize the img to fit in the container
   updateImgSize(img, container)
   // when drops, set the img as background of the container
-  container.style.backgroundImage = `url(${img.src})`;
+  container.style.backgroundImage = img;
 }
 
 /*
@@ -197,9 +211,6 @@ function appendImg(img, container) {
   @param{ele} timg: target img
 */
 function swapImg(sc, tc, simg, timg) {
-  // remove img from original containers
-  tc.removeChild(timg);
-  sc.removeChild(simg);
   // append img to the other container
   appendImg(simg, tc);
   appendImg(timg, sc);

@@ -44,8 +44,9 @@ $highlight-color: #E08E79;
         height: 250px;
         margin: 1px;
         box-sizing: border-box;
-        // background-color: $cell-color;
-        border: solid 1px $cell-color;
+        background-color: $cell-color;
+        // border: solid 1px $cell-color;
+        cursor: pointer;
       }
     }
   }
