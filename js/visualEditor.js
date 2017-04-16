@@ -5,7 +5,6 @@
   }
 })();
 
-
 /*
   Event listener for clicking an img container
   highlight a clicked img container
@@ -17,7 +16,6 @@ document.addEventListener('click', (event) => {
     highlight(ele);
   }
 })
-
 
 /*
   Event listener for clicking the 'add' button
@@ -166,6 +164,8 @@ function handleImgDrag(event) {
     source_img = `url(${source_img.src})`
     appendImg(source_img, target_container);
     highlight(target_container);
+  } else {
+    alert("The cell already contains an image. Please drag the image to an empty cell.");
   }
 }
 
@@ -191,12 +191,12 @@ function handleContainerDrag(event) {
 
 /*
   Append img to a container
-  @param{ele} img
-  @param{ele} container
+  @param{ele} img:        image in url(img.src) format
+  @param{ele} container:  container to contain the image
 */
 function appendImg(img, container) {
   // Resize the img to fit in the container
-  updateImgSize(img, container)
+  updateImgSize(container)
   // when drops, set the img as background of the container
   container.style.backgroundImage = img;
 }
@@ -310,10 +310,9 @@ function split(direction, oldContainer) {
   // insert the newly splited element
   insertAfter(newContainer, oldContainer);
   // if the container contains an img
-  if (oldContainer.children[0]) {
+  if (oldContainer.style.backgroundImage !== "") {
     // Update the image size correspondingly
-    var img = oldContainer.children[0];
-    updateImgSize(img, oldContainer);
+    updateImgSize(oldContainer);
   }
 }
 
@@ -328,10 +327,9 @@ function insertAfter(newNode, oldNode) {
 
 /*
   Update the img size according to its container size
-  @param{ele} img
   @param{ele} container
 */
-function updateImgSize(img, container) {
+function updateImgSize(container) {
   // resize the image
   container.style.backgroundSize = `${container.offsetWidth}px ${container.offsetHeight}px`;
 }
