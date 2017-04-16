@@ -1,6 +1,5 @@
-// Add the saved layout to dropdown
+// Save previously saved layouts in localStorage
 (function addSavedLayout() {
-  // Save previously saved layouts in localStorage
   for (let i = 0, len = localStorage.length; i < len; i++) {
     addLayout(localStorage.key(i));
   }
@@ -11,16 +10,14 @@
   Event listener for clicking an img container
   highlight a clicked img container
 */
-document.addEventListener('drag', (event) => {
+document.addEventListener('click', (event) => {
   var ele = event.target;
-  // if the clicked element is a imgcontainer or
-  //   the clicked element is a img and it's in a container
-  if (ele.tagName === 'DIV' && ele.classList.contains('imgcontainer')) {
+  // if the clicked element is a imgcontainer
+  if (ele.tagName === 'DIV' && ele.classList.contains("imgcontainer")) {
     highlight(ele);
-  } else if (ele.tagName === "IMG" && inContainer(ele)) {
-    highlight(ele.parentElement);
   }
 })
+
 
 /*
   Event listener for clicking the 'add' button
@@ -82,7 +79,7 @@ document.getElementById('js-btn-save').addEventListener('click', () => {
   while (name === "") {
     name = prompt("Please enter a name for your layout, this cannot be blank", "default");
   }
-  if (name != null) {
+  if (name !== null) {
     // save the current layout in local storage
     localStorage.setItem(name, JSON.stringify(layout));
     // add the name as an option to the dropdown menu
@@ -117,6 +114,11 @@ document.addEventListener('click', (event) => {
   save the source object's id, tagName (IMG, DIV, etc.)
 */
 function drag(event) {
+  // if the dragged element is a imgcontainer, highlight it
+  if (event.target.tagName === 'DIV' && event.target.classList.contains("imgcontainer")) {
+    highlight(event.target);
+  }
+  // save id and type in dataTransfer
   event.dataTransfer.setData('id', event.target.id);
   event.dataTransfer.setData('type', event.target.tagName);
 }
@@ -130,18 +132,18 @@ function dragover(event) {
 
 /*
   Ondrop handler
-  append img to container, swap img between containers
+  determine if the source is an image or container,
+  append img to container, swap img between containers accordingly
+  @param{event}  the drop event
 */
 function drop(event) {
   event.preventDefault();
-
+  // get the source type
   var source_type = event.dataTransfer.getData('type');
-
   // Drag img to container
   if (source_type === "IMG") {
     handleImgDrag(event);
   }
-
   // Drag cell to another cell, swap the content
   if (source_type === "DIV") {
     handleContainerDrag(event);
@@ -159,7 +161,6 @@ function handleImgDrag(event) {
   // get the source img
   var source_id = event.dataTransfer.getData('id');
   var source_img = document.getElementById(source_id);
-
   // check if the container already contains an img, only append img when it does not
   if (target_container.style.backgroundImage === "") {
     source_img = `url(${source_img.src})`
@@ -179,12 +180,9 @@ function handleContainerDrag(event) {
   // get the source container
   var source_id = event.dataTransfer.getData('id'); // id = imgcontainer-clicked
   var source_container = document.getElementById(source_id);
-  console.log(source_container);
-
   // get the target container's background image
   var target_img = target_container.style.backgroundImage;
   var source_img = source_container.style.backgroundImage;
-  
   // swap the container's content
   swapImg(source_container, target_container, source_img, target_img);
   highlight(target_container);
@@ -240,6 +238,8 @@ function createNewContainer() {
   container.setAttribute('class', 'imgcontainer');
   container.setAttribute('ondrop', 'drop(event)');
   container.setAttribute('ondragover', 'dragover(event)');
+  container.setAttribute('draggable', 'true');
+  container.setAttribute('ondragstart', 'drag(event)');
   return container;
 }
 
@@ -262,7 +262,6 @@ function createParentContainer(direction) {
 function handleSplit(direction) {
   // get the clicked container
   var oldContainer = document.getElementById('imgcontainer-clicked');
-
   // Check if there is clicked imgcontainer
   if (oldContainer) {
     // Make sure the container after split is not too small (should be larger than 60)
@@ -294,15 +293,12 @@ function split(direction, oldContainer) {
     oldContainer.style.width = `${Math.round(oldContainer.offsetWidth/2)}px`;
     var newParentContainer = createParentContainer('v');
   }
-
   // Create a parent container for the newly created two splitted cells
   var parentContainer = oldContainer.parentNode;
   parentContainer.insertBefore(newParentContainer, oldContainer);
   newParentContainer.appendChild(oldContainer);
-
   // create a new container
   var newContainer = createNewContainer();
-
   // set the size of the new container
   if (direction === 'h') {
     newContainer.style.height = oldContainer.style.height;
@@ -311,10 +307,8 @@ function split(direction, oldContainer) {
     newContainer.style.width = oldContainer.style.width;
     newContainer.style.height = `${oldContainer.offsetHeight}px`;
   }
-
   // insert the newly splited element
   insertAfter(newContainer, oldContainer);
-
   // if the container contains an img
   if (oldContainer.children[0]) {
     // Update the image size correspondingly
