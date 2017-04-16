@@ -159,14 +159,11 @@ function handleImgDrag(event) {
   // get the source img
   var source_id = event.dataTransfer.getData('id');
   var source_img = document.getElementById(source_id);
-  // check if the container already contains an img, only append img when it does not
-  if (target_container.style.backgroundImage === "") {
-    source_img = `url(${source_img.src})`
-    appendImg(source_img, target_container);
-    highlight(target_container);
-  } else {
-    alert("The cell already contains an image. Please drag the image to an empty cell.");
-  }
+  // format the source image
+  source_img = `url(${source_img.src})`
+  // append the image to the container
+  appendImg(source_img, target_container);
+  highlight(target_container);
 }
 
 /*
