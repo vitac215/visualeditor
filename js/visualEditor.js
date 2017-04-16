@@ -1,8 +1,9 @@
-// Save the current layout as default
-(function saveDefaultLayout() {
-  var default_layout = document.getElementsByClassName('section-view')[0].innerHTML;
-  localStorage.setItem('default', JSON.stringify(default_layout));
-  addLayout('default');
+// Add the saved layout to dropdown
+(function addSavedLayout() {
+  // Save previously saved layouts in localStorage
+  for (let i = 0, len = localStorage.length; i < len; i++) {
+    addLayout(localStorage.key(i));
+  }
 })();
 
 
